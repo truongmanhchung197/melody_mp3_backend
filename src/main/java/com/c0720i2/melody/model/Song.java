@@ -16,7 +16,7 @@ public class Song {
     @Column
     private Long id;
     @Column(nullable = false)
-    private Long name;
+    private String  name;
     @Column(nullable = false)
     private String file;
     @Column(nullable = false)
