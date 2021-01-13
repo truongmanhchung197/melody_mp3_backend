@@ -15,6 +15,11 @@ public class SongServiceImpl implements SongService{
     }
 
     @Override
+    public Iterable<Song> listLatest() {
+        return songRepository.findAllByCreationTimeOrderByCreationTime();
+    }
+
+    @Override
     public Song findById(Long id) {
         return songRepository.findById(id).orElse(null);
     }
