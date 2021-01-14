@@ -21,7 +21,7 @@ public class SongController {
 
     @ApiOperation(value = "Create Song", response = Song.class)
     @RequestMapping(value = "create", method = RequestMethod.POST)
-    public ResponseEntity<Song> create(@RequestBody Song song){
+    public ResponseEntity<Song> create(@RequestBody Song song) {
         song.setCreationTime(currentTime);
         songService.save(song);
         return new ResponseEntity<>(song, HttpStatus.OK);
@@ -29,21 +29,18 @@ public class SongController {
 
     @ApiOperation(value = "show list latest songs", response = Song.class)
     @RequestMapping(value = "latestSongs", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Song>> listLatestSong(){
+    public ResponseEntity<Iterable<Song>> listLatestSong() {
         Iterable<Song> songs = songService.listLatest();
-        if (songs == null){
+        if (songs == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "show all song created by user", response = Song.class)
-//    @GetMapping("{id}")
-//    public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id){
-//        Iterable<Song> songs = songService.findAllByGuest(id);
-//        if (songs == null){
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }
-//        return new ResponseEntity<>(songs, HttpStatus.OK);
-//    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<Song> getSongById(@PathVariable Long id) {
+        Song song = songService.findById(id);
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
 }

@@ -1,5 +1,6 @@
 package com.c0720i2.melody.model;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -21,6 +22,6 @@ public class Playlist {
     private User user;
     @ManyToMany
     @JoinTable
+    @Ignore
     private List<Song> songs;
-
 }
