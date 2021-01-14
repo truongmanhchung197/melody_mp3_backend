@@ -1,11 +1,10 @@
 package com.c0720i2.melody.config.security;
 
+import com.c0720i2.melody.config.custom.CustomAccessDeniedHandler;
+import com.c0720i2.melody.config.custom.RestAuthenticationEntryPoint;
+import com.c0720i2.melody.config.fillter.JwtAuthenticationFilter;
+import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.user.IUserService;
-import com.example.demo.configuration.custom.CustomAccessDeniedHandler;
-import com.example.demo.configuration.custom.RestAuthenticationEntryPoint;
-import com.example.demo.configuration.fillter.JwtAuthenticationFilter;
-import com.example.demo.model.User;
-import com.example.demo.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
