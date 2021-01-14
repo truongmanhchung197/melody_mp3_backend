@@ -3,6 +3,7 @@ package com.c0720i2.melody.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,8 +15,8 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
-    @ManyToOne
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
     @OneToOne
     private Guest guest;
 
