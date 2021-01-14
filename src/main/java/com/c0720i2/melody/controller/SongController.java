@@ -43,4 +43,15 @@ public class SongController {
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "show all songs created by user")
+    @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id){
+        Iterable<Song> songs = songService.listSongsByUser(id);
+        if (songs == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
 }
