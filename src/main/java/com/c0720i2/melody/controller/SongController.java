@@ -26,4 +26,15 @@ public class SongController {
         songService.save(song);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "show list latest songs", response = Song.class)
+    @RequestMapping(value = "latestSongs", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Song>> listLatestSong(){
+        Iterable<Song> songs = songService.listLatest();
+        if (songs == null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
 }
