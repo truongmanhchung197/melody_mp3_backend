@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/song/")
+@RequestMapping("/songs/")
 @CrossOrigin("*")
 public class SongController {
     @Autowired
@@ -37,8 +37,8 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
-
-    @GetMapping("{id}")
+    @ApiOperation(value = "show detail song by id", response = Song.class)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity<Song> getSongById(@PathVariable Long id) {
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
