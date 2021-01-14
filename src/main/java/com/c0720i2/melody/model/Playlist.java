@@ -19,7 +19,7 @@ public class Playlist {
     @Column(nullable = false)
     private Date creationTime;
     @ManyToOne
-    private Guest guest;
+    private User user;
     @ManyToMany
     @JoinTable
     @Ignore

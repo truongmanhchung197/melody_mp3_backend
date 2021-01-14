@@ -16,7 +16,7 @@ public class Song {
     @Column
     private Long id;
     @Column(nullable = false)
-    private Long name;
+    private String  name;
     @Column(nullable = false)
     private String file;
     @Column(nullable = false)
@@ -30,7 +30,7 @@ public class Song {
     @ManyToOne
     private Album album;
     @ManyToOne
-    private Guest guest;
+    private User user;
     @ManyToMany(mappedBy = "songs")
     private List<Singer> singers;
     @ManyToMany(mappedBy = "songs")

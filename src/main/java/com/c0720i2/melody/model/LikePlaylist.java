@@ -13,5 +13,5 @@ public class LikePlaylist {
     @ManyToOne
     private Playlist playlist;
     @ManyToOne
-    private Guest guest;
+    private User user;
 }
