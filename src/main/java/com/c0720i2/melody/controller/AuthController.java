@@ -1,9 +1,11 @@
 package com.c0720i2.melody.controller;
 
+import com.c0720i2.melody.model.Guest;
 import com.c0720i2.melody.model.JwtResponse;
 import com.c0720i2.melody.model.Role;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.JwtService;
+import com.c0720i2.melody.service.guest.IGuestService;
 import com.c0720i2.melody.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,9 @@ public class AuthController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IGuestService guestService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
         Authentication authentication = authenticationManager.authenticate(
@@ -42,15 +47,17 @@ public class AuthController {
     }
 
     @GetMapping("profile")
-    public ResponseEntity<String> hello(){
+    public ResponseEntity<String> profile(){
         return new ResponseEntity<>("Profile", HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user){
+    public ResponseEntity<User> register(@RequestBody User user,@RequestBody Guest guest){
         Set<Role> roleSet = new HashSet<>();
-        roleSet.add(new Role(1L,"ROLE_USER"));
+        roleSet.add(new Role(2L,"ROLE_USER"));
         user.setRoles(roleSet);
-        return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
+        guestService.save(guest);
+        userService.save(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
