@@ -15,5 +15,5 @@ public class CommentSong {
     @ManyToOne
     private Song song;
     @ManyToOne
-    private Guest guest;
+    private User user;
 }

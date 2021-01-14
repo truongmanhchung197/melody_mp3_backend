@@ -13,7 +13,7 @@ public class CommentPlaylist {
     @Column(nullable = false, length = 1000)
     private String content;
     @ManyToOne
-    private Guest guest;
+    private User user;
     @ManyToOne
     private Playlist playlist;
 }

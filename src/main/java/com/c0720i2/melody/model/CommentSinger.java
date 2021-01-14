@@ -13,7 +13,7 @@ public class CommentSinger {
     @Column(nullable = false, length = 1000)
     private String content;
     @ManyToOne
-    private Guest guest;
+    private UserDetail userDetail;
     @ManyToOne
-    private Singer singer;
+    private User user;
 }

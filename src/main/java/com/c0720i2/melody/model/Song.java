@@ -1,10 +1,8 @@
 package com.c0720i2.melody.model;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
-import javax.persistence.metamodel.SingularAttribute;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class Song {
     @ManyToOne
     private Album album;
     @ManyToOne
-    private Guest guest;
+    private User user;
     @ManyToMany(mappedBy = "songs")
     private List<Singer> singers;
     @ManyToMany(mappedBy = "songs")
