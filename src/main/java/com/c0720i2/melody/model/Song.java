@@ -30,7 +30,7 @@ public class Song {
     @ManyToOne
     private Album album;
     @ManyToOne
-    private Guest guest;
+    private User user;
     @ManyToMany(mappedBy = "songs")
     private List<Singer> singers;
     @ManyToMany(mappedBy = "songs")

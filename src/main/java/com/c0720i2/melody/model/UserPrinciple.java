@@ -5,9 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +16,7 @@ public class UserPrinciple implements UserDetails {
     private String username;
     private String password;
     private Role role;
-    private Guest guest;
+    private UserDetail userDetail;
 
     private Collection<? extends GrantedAuthority> roles;
 
@@ -28,11 +25,11 @@ public class UserPrinciple implements UserDetails {
         return roles;
     }
 
-    public UserPrinciple(Long id, String username, String password, Guest guest, Collection<? extends GrantedAuthority> roles) {
+    public UserPrinciple(Long id, String username, String password, UserDetail userDetail, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.guest = guest;
+        this.userDetail = userDetail;
         this.roles = roles;
     }
 
@@ -44,7 +41,7 @@ public class UserPrinciple implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                user.getGuest(),
+                user.getUserDetail(),
                 authorities
         );
     };
@@ -77,12 +74,12 @@ public class UserPrinciple implements UserDetails {
         this.role = role;
     }
 
-    public Guest getGuest() {
-        return guest;
+    public UserDetail getUserDetail() {
+        return userDetail;
     }
 
-    public void setGuest(Guest guest) {
-        this.guest = guest;
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
     }
 
     public Collection<? extends GrantedAuthority> getRoles() {

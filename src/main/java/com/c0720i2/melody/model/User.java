@@ -18,6 +18,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
     @OneToOne
-    private Guest guest;
+    private UserDetail userDetail;
 
 }

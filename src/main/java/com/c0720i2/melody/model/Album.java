@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -17,6 +18,8 @@ public class Album {
     private Date creationTime;
     @Column(nullable = false)
     private Long numberOfView;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Singer> singers;
     @ManyToOne
-    private Singer singer;
+    private User user;
 }
