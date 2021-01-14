@@ -1,5 +1,6 @@
 package com.c0720i2.melody.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class UserDetail {
     private String tel;
     private String avatar;
     @OneToOne
+    @JsonIgnore
     private User user;
 
 }

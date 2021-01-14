@@ -1,4 +1,4 @@
-package com.c0720i2.melody.service;
+package com.c0720i2.melody.service.song;
 
 import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.repository.SongRepository;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SongServiceImpl implements SongService{
+public class SongServiceImpl implements SongService {
     @Autowired
     private SongRepository songRepository;
     @Override

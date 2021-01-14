@@ -15,7 +15,7 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles;
     @OneToOne
     private UserDetail userDetail;
