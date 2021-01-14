@@ -1,13 +1,14 @@
-package com.c0720i2.melody.service;
+package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.repository.PlayListRepository;
+import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
-public class PlayListService implements IPlayListService{
+public class PlayListService implements IPlayListService {
     @Autowired
     private PlayListRepository playListRepository;
 
