@@ -1,7 +1,7 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
-import com.c0720i2.melody.service.IPlayListService;
+import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

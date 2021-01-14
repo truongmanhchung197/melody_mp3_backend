@@ -22,6 +22,5 @@ public class Playlist {
     private User user;
     @ManyToMany
     @JoinTable
-    @Ignore
     private List<Song> songs;
 }
