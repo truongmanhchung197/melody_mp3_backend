@@ -1,7 +1,7 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Song;
-import com.c0720i2.melody.service.SongService;
+import com.c0720i2.melody.service.song.SongService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,4 +37,13 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
+//    @ApiOperation(value = "show all song created by user", response = Song.class)
+//    @GetMapping("{id}")
+//    public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id){
+//        Iterable<Song> songs = songService.findAllByGuest(id);
+//        if (songs == null){
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(songs, HttpStatus.OK);
+//    }
 }
