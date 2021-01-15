@@ -1,11 +1,11 @@
 package com.c0720i2.melody.controller;
 
-import com.c0720i2.melody.model.Guest;
 import com.c0720i2.melody.model.JwtResponse;
 import com.c0720i2.melody.model.Role;
 import com.c0720i2.melody.model.User;
+import com.c0720i2.melody.model.UserDetail;
 import com.c0720i2.melody.service.JwtService;
-import com.c0720i2.melody.service.guest.IGuestService;
+import com.c0720i2.melody.service.userdetail.IUserDetailService;
 import com.c0720i2.melody.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ public class AuthController {
     private IUserService userService;
 
     @Autowired
-    private IGuestService guestService;
+    private IUserDetailService guestService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
@@ -46,18 +46,22 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),userDetails.getAuthorities()));
     }
 
-    @GetMapping("profile")
+    @GetMapping("/profile")
     public ResponseEntity<String> profile(){
         return new ResponseEntity<>("Profile", HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user,@RequestBody Guest guest){
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(new Role(2L,"ROLE_USER"));
-        user.setRoles(roleSet);
-        guestService.save(guest);
-        userService.save(user);
+    public ResponseEntity<User> register(@RequestBody User user){
+        if (user != null){
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(new Role(2L,"ROLE_USER"));
+            user.setRoles(roleSet);
+            userService.save(user);
+        }
+//        if (userDetail != null){
+//            guestService.save(userDetail);
+//        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
