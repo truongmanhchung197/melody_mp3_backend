@@ -8,4 +8,5 @@ public interface SongService {
     Song findById(Long id);
     Song save(Song song);
     void delete(Long id);
+    Iterable<Song> getList10SongInTopView();
 }

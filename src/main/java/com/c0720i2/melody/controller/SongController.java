@@ -43,4 +43,13 @@ public class SongController {
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+
+    @GetMapping("top10views")
+    public ResponseEntity<Iterable<Song>> getList10SongInTopView() {
+        Iterable<Song> songs = songService.getList10SongInTopView();
+        if (songs == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
 }

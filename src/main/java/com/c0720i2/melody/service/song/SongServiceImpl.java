@@ -33,4 +33,9 @@ public class SongServiceImpl implements SongService {
     public void delete(Long id) {
         songRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Song> getList10SongInTopView() {
+        return songRepository.findAllByNumberOfViewOrderByNumberOfView();
+    }
 }
