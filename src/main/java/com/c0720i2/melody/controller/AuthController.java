@@ -1,19 +1,20 @@
 package com.c0720i2.melody.controller;
-import com.c0720i2.melody.model.JwtResponse;
-import com.c0720i2.melody.model.Role;
-import com.c0720i2.melody.model.User;
-import com.c0720i2.melody.model.UserDetail;
+import com.c0720i2.melody.model.*;
 import com.c0720i2.melody.service.JwtService;
 import com.c0720i2.melody.service.userdetail.IUserDetailService;
 import com.c0720i2.melody.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,8 @@ public class AuthController {
     private IUserService userService;
     @Autowired
     private IUserDetailService guestService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
         Authentication authentication = authenticationManager.authenticate(
@@ -38,25 +41,34 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(),userDetails.getAuthorities()));
     }
     @GetMapping("/profile")
-    public ResponseEntity<String> profile(){
+    public ResponseEntity<String> getProfile(){
         return new ResponseEntity<>("Profile", HttpStatus.OK);
     }
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user){
-        if (user != null){
+    public ResponseEntity<Customer> register(@RequestBody Customer customer){
+        if (customer != null){
+            User user = new User();
+            UserDetail userDetails = new UserDetail();
             Set<Role> roleSet = new HashSet<>();
-            roleSet.add(new Role(2L,"ROLE_USER"));
+            roleSet.add(new Role(1L,"ROLE_USER"));
             user.setRoles(roleSet);
+            user.setUsername(customer.getUsername());
+            user.setPassword(passwordEncoder.encode(customer.getPassword()));
+            userDetails.setAddress(customer.getAddress());
+            userDetails.setEmail(customer.getEmail());
+            userDetails.setName(customer.getName());
+            userDetails.setTel(customer.getTel());
+            userDetails.setUser(user);
+            user.setUserDetail(userDetails);
             userService.save(user);
+            guestService.save(userDetails);
         }
-//        if (userDetail != null){
-//            guestService.save(userDetail);
-//        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    @GetMapping("/profile/{username}")
+    public ResponseEntity<UserDetail> getProfile(@PathVariable String username){
+        User user = userService.findByUsername(username);
+        UserDetail userDetail = userService.getUserDetailByUser(user);
+        return new ResponseEntity<>(userDetail,HttpStatus.OK);
+    }
 }
-
-
-
-
-
