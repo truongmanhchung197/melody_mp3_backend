@@ -30,9 +30,10 @@ public class PlayListController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    Date currentTime = Calendar.getInstance().getTime();
+
     @PostMapping("")
     public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist){
+        Date currentTime = Calendar.getInstance().getTime();
         playlist.setCreationTime(currentTime);
         return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
     }
