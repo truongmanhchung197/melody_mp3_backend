@@ -1,6 +1,5 @@
 package com.c0720i2.melody.controller;
 
-import com.c0720i2.melody.model.Guest;
 import com.c0720i2.melody.model.JwtResponse;
 import com.c0720i2.melody.model.Role;
 import com.c0720i2.melody.model.User;

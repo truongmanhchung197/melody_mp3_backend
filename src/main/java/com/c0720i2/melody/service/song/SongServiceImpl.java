@@ -26,6 +26,11 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
+    public Iterable<Song> findByName(String keyword) {
+        return songRepository.findAllByNameContains(keyword);
+    }
+
+    @Override
     public Song findById(Long id) {
         return songRepository.findById(id).orElse(null);
     }

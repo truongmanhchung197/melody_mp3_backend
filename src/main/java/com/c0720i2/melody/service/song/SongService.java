@@ -7,6 +7,7 @@ public interface SongService {
     Iterable<Song> findAll();
     Iterable<Song> listLatest();
     Iterable<Song> listSongsByUser(Long id);
+    Iterable<Song> findByName(String keyword);
     Song findById(Long id);
     Song save(Song song);
     void delete(Long id);

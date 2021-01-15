@@ -54,4 +54,14 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "find by name", response = Song.class)
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Song>> searchByName(String keyword){
+        Iterable<Song> songs = songService.findByName(keyword);
+        if (songs == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
 }
