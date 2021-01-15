@@ -25,7 +25,7 @@ public class Song {
     private String author;
     @Column(nullable = false)
     private String avatar;
-    @Column(length = 60000)
+    @Column(length = 6000)
     private String lyric;
     @ManyToOne
     private Album album;
