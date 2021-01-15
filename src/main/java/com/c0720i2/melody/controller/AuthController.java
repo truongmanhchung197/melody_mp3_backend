@@ -1,9 +1,6 @@
 package com.c0720i2.melody.controller;
 
-import com.c0720i2.melody.model.JwtResponse;
-import com.c0720i2.melody.model.Role;
-import com.c0720i2.melody.model.User;
-import com.c0720i2.melody.model.UserDetail;
+import com.c0720i2.melody.model.*;
 import com.c0720i2.melody.service.JwtService;
 import com.c0720i2.melody.service.userdetail.IUserDetailService;
 import com.c0720i2.melody.service.user.IUserService;
@@ -52,16 +49,23 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user){
-        if (user != null){
+    public ResponseEntity<Customer> register(@RequestBody Customer customer){
+        if (customer != null){
+            User user = new User();
+            UserDetail userDetails = new UserDetail();
             Set<Role> roleSet = new HashSet<>();
-            roleSet.add(new Role(2L,"ROLE_USER"));
+            roleSet.add(new Role(1L,"ROLE_USER"));
             user.setRoles(roleSet);
+            user.setUsername(customer.getUsername());
+            user.setPassword(customer.getPassword());
             userService.save(user);
+            userDetails.setAddress(customer.getAddress());
+            userDetails.setEmail(customer.getEmail());
+            userDetails.setName(customer.getName());
+            userDetails.setTel(customer.getTel());
+            userDetails.setUser(user);
+            guestService.save(userDetails);
         }
-//        if (userDetail != null){
-//            guestService.save(userDetail);
-//        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
