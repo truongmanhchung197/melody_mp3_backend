@@ -64,4 +64,14 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "delete song created by user", response = Song.class)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id){
+        Song song = songService.findById(id);
+        if (song == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        songService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
