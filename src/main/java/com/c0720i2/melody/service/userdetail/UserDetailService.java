@@ -1,9 +1,11 @@
 package com.c0720i2.melody.service.userdetail;
 
+import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.model.UserDetail;
 import com.c0720i2.melody.repository.IUserDetailRepository;
 import com.c0720i2.melody.service.IGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,5 +34,10 @@ public class UserDetailService implements IUserDetailService {
     @Override
     public UserDetail save(UserDetail guest) {
         return iUserDetailRepository.save(guest);
+    }
+
+    @Override
+    public UserDetail getUserDetailByUser(User user) {
+        return iUserDetailRepository.getUserDetailByUser(user);
     }
 }

@@ -68,7 +68,7 @@ public class AuthController {
     @GetMapping("/profile/{username}")
     public ResponseEntity<UserDetail> getProfile(@PathVariable String username){
         User user = userService.findByUsername(username);
-        UserDetail userDetail = userService.getUserDetailByUser(user);
+        UserDetail userDetail = guestService.getUserDetailByUser(user);
         return new ResponseEntity<>(userDetail,HttpStatus.OK);
     }
 }

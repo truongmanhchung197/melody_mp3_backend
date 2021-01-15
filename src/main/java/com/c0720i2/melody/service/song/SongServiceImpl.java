@@ -1,7 +1,6 @@
 package com.c0720i2.melody.service.song;
 
 import com.c0720i2.melody.model.Song;
-import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +20,6 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Iterable<Song> listSongsByUser(Long id) {
-        return songRepository.findAllByUserId(id);
-    }
-
-    @Override
     public Song findById(Long id) {
         return songRepository.findById(id).orElse(null);
     }
@@ -39,4 +33,26 @@ public class SongServiceImpl implements SongService {
     public void delete(Long id) {
         songRepository.deleteById(id);
     }
+
+
+
+
+
+
+
+
+    @Override
+    public Iterable<Song> listSongsByUser(Long id) {
+        return songRepository.findAllByUserId(id);
+    }
+
+    @Override
+    public Iterable<Song> findByName(String keyword) {
+        return songRepository.findAllByNameContains(keyword);
+    }
+    @Override
+    public Iterable<Song> getList10SongInTopView() {
+        return songRepository.findAllByNumberOfViewOrderByNumberOfView();
+    }
 }
+
