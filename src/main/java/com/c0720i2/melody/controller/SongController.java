@@ -44,6 +44,17 @@ public class SongController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
+
+
+
+
+
+
+
+
+
+
+
     @ApiOperation(value = "show all songs created by user")
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id){
@@ -54,4 +65,32 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "find by name", response = Song.class)
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Song>> searchByName(String keyword){
+        Iterable<Song> songs = songService.findByName(keyword);
+        if (songs == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "delete song created by user", response = Song.class)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id){
+        Song song = songService.findById(id);
+        if (song == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        songService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("top10views")
+    public ResponseEntity<Iterable<Song>>getList10SongInTopView(){
+        Iterable<Song> songs=songService.getList10SongInTopView();
+        if(songs==null){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
 }
