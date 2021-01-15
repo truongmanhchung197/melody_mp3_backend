@@ -1,7 +1,7 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
-import com.c0720i2.melody.service.IPlayListService;
+import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +30,10 @@ public class PlayListController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    Date currentTime = Calendar.getInstance().getTime();
+
     @PostMapping("")
     public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist){
+        Date currentTime = Calendar.getInstance().getTime();
         playlist.setCreationTime(currentTime);
         return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
     }

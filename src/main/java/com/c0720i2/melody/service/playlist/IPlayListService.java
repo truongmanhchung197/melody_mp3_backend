@@ -1,4 +1,4 @@
-package com.c0720i2.melody.service;
+package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
 import org.springframework.stereotype.Service;
