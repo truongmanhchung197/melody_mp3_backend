@@ -58,10 +58,15 @@ public class AuthController {
             userDetails.setEmail(customer.getEmail());
             userDetails.setName(customer.getName());
             userDetails.setTel(customer.getTel());
-            userDetails.setUser(user);
-            user.setUserDetail(userDetails);
-            userService.save(user);
             guestService.save(userDetails);
+            userService.save(user);
+            User user1 = userService.findByUsername(customer.getUsername());
+            userDetails.setUser(user1);
+            userDetails.setAvatar("https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png");
+            guestService.save(userDetails);
+            UserDetail userDetail1 = guestService.getUserDetailByUser(user1);
+            user1.setUserDetail(userDetail1);
+            userService.save(user1);
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -70,5 +75,26 @@ public class AuthController {
         User user = userService.findByUsername(username);
         UserDetail userDetail = guestService.getUserDetailByUser(user);
         return new ResponseEntity<>(userDetail,HttpStatus.OK);
+    }
+    @PutMapping("/profile/{username}")
+    public ResponseEntity<UserDetail> editProfile(@PathVariable String username, @RequestBody Customer customer){
+        User user = userService.findByUsername(username);
+        UserDetail userDetailOld = guestService.getUserDetailByUser(user);
+        userDetailOld.setName(customer.getName());
+        userDetailOld.setTel(customer.getTel());
+        userDetailOld.setEmail(customer.getEmail());
+        userDetailOld.setAddress(customer.getAddress());
+        userDetailOld.setAvatar(customer.getAvatar());
+        if (customer.getPassword() != null){
+            user.setPassword(passwordEncoder.encode(customer.getPassword()));
+            userService.save(user);
+        }else {
+            guestService.save(userDetailOld);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/register")
+    public ResponseEntity<Iterable<User>> getAll(){
+        return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
     }
 }

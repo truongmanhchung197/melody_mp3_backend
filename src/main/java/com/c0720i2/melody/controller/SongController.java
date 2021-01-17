@@ -1,7 +1,10 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.song.SongService;
+import com.c0720i2.melody.service.user.IUserService;
+import com.c0720i2.melody.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,17 +15,23 @@ import java.util.Calendar;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/songs/")
+@RequestMapping("/createsong")
 @CrossOrigin("*")
 public class SongController {
     @Autowired
     SongService songService;
+
+    @Autowired
+    IUserService userService;
     Date currentTime = Calendar.getInstance().getTime();
 
     @ApiOperation(value = "Create Song", response = Song.class)
-    @RequestMapping(value = "create", method = RequestMethod.POST)
-    public ResponseEntity<Song> create(@RequestBody Song song) {
+    @PostMapping("/{username}")
+    public ResponseEntity<Song> create(@RequestBody Song song, @PathVariable String username) {
         song.setCreationTime(currentTime);
+        song.setNumberOfView(0L);
+        User user = userService.findByUsername(username);
+        song.setUser(user);
         songService.save(song);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
