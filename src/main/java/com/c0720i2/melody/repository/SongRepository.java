@@ -13,6 +13,6 @@ public interface SongRepository extends CrudRepository<Song, Long> {
 
 
 
-    Iterable<Song> findAllByUserId(Long id);
+    Iterable<Song> findAllByUserId(Long idUser);
     Iterable<Song> findAllByNameContains(String keyword);
 }

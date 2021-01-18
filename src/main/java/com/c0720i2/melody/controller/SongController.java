@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 @RestController
-@RequestMapping("/createsong")
 @CrossOrigin("*")
 public class SongController {
     @Autowired
@@ -26,7 +26,7 @@ public class SongController {
     Date currentTime = Calendar.getInstance().getTime();
 
     @ApiOperation(value = "Create Song", response = Song.class)
-    @PostMapping("/{username}")
+    @PostMapping("/createsong/{username}")
     public ResponseEntity<Song> create(@RequestBody Song song, @PathVariable String username) {
         song.setCreationTime(currentTime);
         song.setNumberOfView(0L);
@@ -47,18 +47,35 @@ public class SongController {
     }
 
     @ApiOperation(value = "show detail song by id", response = Song.class)
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Song> getSongById(@PathVariable Long id) {
+    @GetMapping("/editsong/{username}/{id}")
+    public ResponseEntity<Song> getSongById(@PathVariable Long id, @PathVariable String username) {
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+    @PutMapping("/editsong/{username}/{id}")
+    public ResponseEntity<Song> editSong(@RequestBody Song song, @PathVariable Long id, @PathVariable String username) {
+        if (songService.findById(id) != null) {
+            songService.save(song);
+        }
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+    @GetMapping("/listsong/{username}")
+    public ResponseEntity<Iterable<Song>> getSongByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        Iterable<Song> listSong = songService.findAllByUserId(user.getId());
+        return new ResponseEntity<>(listSong, HttpStatus.OK);
+    }
 
 
-
-
-
-
-
+    @ApiOperation(value = "find by name", response = Song.class)
+    @RequestMapping(value = "search/{keyword}", method = RequestMethod.GET)
+    public ResponseEntity<Iterable<Song>> searchByName(@PathVariable String keyword){
+        Iterable<Song> songs = songService.findByName(keyword);
+        if (songs == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
 
 
 
@@ -70,16 +87,6 @@ public class SongController {
         Iterable<Song> songs = songService.listSongsByUser(id);
         if (songs == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(songs, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "find by name", response = Song.class)
-    @RequestMapping(value = "search", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Song>> searchByName(String keyword){
-        Iterable<Song> songs = songService.findByName(keyword);
-        if (songs == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
@@ -101,5 +108,10 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<Song> getSongByIdSong(@PathVariable Long id){
+        Song song = songService.findById(id);
+        return new ResponseEntity<>(song, HttpStatus.OK);
     }
 }

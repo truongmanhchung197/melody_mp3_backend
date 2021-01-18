@@ -54,5 +54,10 @@ public class SongServiceImpl implements SongService {
     public Iterable<Song> getList10SongInTopView() {
         return songRepository.findAllByNumberOfViewOrderByNumberOfView();
     }
+
+    @Override
+    public Iterable<Song> findAllByUserId(Long idUser) {
+        return songRepository.findAllByUserId(idUser);
+    }
 }
 
