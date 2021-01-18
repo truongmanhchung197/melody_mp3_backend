@@ -19,12 +19,12 @@ public class PlayListController {
     IPlayListService playListService;
 
     @GetMapping("")
-    public ResponseEntity<Iterable<Playlist>> getAll(){
+    public ResponseEntity<Iterable<Playlist>> getAll() {
         return new ResponseEntity<>(playListService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Playlist> getPlayListById(@PathVariable Long id){
+    public ResponseEntity<Playlist> getPlayListById(@PathVariable Long id) {
         Optional<Playlist> playlistOptional = playListService.findById(id);
         return playlistOptional.map(playlist -> new ResponseEntity<>(playlist, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -32,18 +32,18 @@ public class PlayListController {
 
 
     @PostMapping("")
-    public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist){
+    public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist) {
         Date currentTime = Calendar.getInstance().getTime();
         playlist.setCreationTime(currentTime);
         return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Playlist> updatePlayList(@PathVariable Long id, @RequestBody Playlist playlist){
+    public ResponseEntity<Playlist> updatePlayList(@PathVariable Long id, @RequestBody Playlist playlist) {
         Optional<Playlist> playlistOptional = playListService.findById(id);
         return playlistOptional.map(playlist1 -> {
             playlist.setId(playlist1.getId());
-            if (playlist.getName().equalsIgnoreCase("")){
+            if (playlist.getName().equalsIgnoreCase("")) {
                 playlist.setName(playlist1.getName());
             }
             return new ResponseEntity<>(playListService.save(playlist), HttpStatus.OK);
@@ -51,11 +51,20 @@ public class PlayListController {
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<Playlist> deletePlayList(@PathVariable Long id){
+    public ResponseEntity<Playlist> deletePlayList(@PathVariable Long id) {
         Optional<Playlist> playlistOptional = playListService.findById(id);
         return playlistOptional.map(playlist -> {
             playListService.remove(id);
             return new ResponseEntity<Playlist>(HttpStatus.NO_CONTENT);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/latestPlaylists")
+    public ResponseEntity<Iterable<Playlist>> latestPlaylist(){
+        Iterable<Playlist> playlists = playListService.listLatest();
+        if (playlists == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
 }

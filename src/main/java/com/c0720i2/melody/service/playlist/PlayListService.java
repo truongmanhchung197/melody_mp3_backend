@@ -31,4 +31,9 @@ public class PlayListService implements IPlayListService {
     public void remove(Long id) {
         playListRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Playlist> listLatest() {
+        return playListRepository.findAllByCreationTimeOrderByCreationTime();
+    }
 }

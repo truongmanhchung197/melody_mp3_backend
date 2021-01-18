@@ -11,4 +11,5 @@ public interface IPlayListService {
     Playlist save (Playlist playlist);
     Optional<Playlist> findById(Long id);
     void remove(Long id);
+    Iterable<Playlist> listLatest();
 }
