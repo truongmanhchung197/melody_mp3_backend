@@ -4,6 +4,7 @@ import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.song.SongService;
 import com.c0720i2.melody.service.user.IUserService;
+import com.c0720i2.melody.service.user.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 @RestController
 @CrossOrigin("*")
@@ -90,8 +92,8 @@ public class SongController {
     }
 
     @ApiOperation(value = "delete song created by user", response = Song.class)
-    @RequestMapping(value = "/listsong/{username}/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id, @PathVariable String username){
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id){
         Song song = songService.findById(id);
         if (song == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -112,5 +114,4 @@ public class SongController {
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
-
 }
