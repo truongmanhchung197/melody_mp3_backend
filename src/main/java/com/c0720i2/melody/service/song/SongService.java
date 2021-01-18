@@ -12,4 +12,6 @@ public interface SongService {
     Iterable<Song> listSongsByUser(Long id);
     Iterable<Song> findByName(String keyword);
     Iterable<Song> getList10SongInTopView();
+    Iterable<Song> findAllByUserId(Long idUser);
+
 }

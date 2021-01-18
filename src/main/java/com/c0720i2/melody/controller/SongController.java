@@ -1,4 +1,5 @@
 package com.c0720i2.melody.controller;
+
 import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.song.SongService;
@@ -9,17 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+
 @RestController
 @CrossOrigin("*")
 public class SongController {
     @Autowired
     SongService songService;
+
     @Autowired
     IUserService userService;
     Date currentTime = Calendar.getInstance().getTime();
+
     @ApiOperation(value = "Create Song", response = Song.class)
     @PostMapping("/createsong/{username}")
     public ResponseEntity<Song> create(@RequestBody Song song, @PathVariable String username) {
@@ -30,6 +35,7 @@ public class SongController {
         songService.save(song);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+
     @ApiOperation(value = "show list latest songs", response = Song.class)
     @RequestMapping(value = "latestSongs", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Song>> listLatestSong() {
@@ -39,6 +45,7 @@ public class SongController {
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
     @ApiOperation(value = "show detail song by id", response = Song.class)
     @GetMapping("/editsong/{username}/{id}")
     public ResponseEntity<Song> getSongById(@PathVariable Long id, @PathVariable String username) {
@@ -52,8 +59,16 @@ public class SongController {
         }
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+    @GetMapping("/listsong/{username}")
+    public ResponseEntity<Iterable<Song>> getSongByUsername(@PathVariable String username) {
+        User user = userService.findByUsername(username);
+        Iterable<Song> listSong = songService.findAllByUserId(user.getId());
+        return new ResponseEntity<>(listSong, HttpStatus.OK);
+    }
+
+
     @ApiOperation(value = "find by name", response = Song.class)
-    @RequestMapping(value = "/search/{keyword}", method = RequestMethod.GET)
+    @RequestMapping(value = "search/{keyword}", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Song>> searchByName(@PathVariable String keyword){
         Iterable<Song> songs = songService.findByName(keyword);
         if (songs == null){
@@ -61,8 +76,13 @@ public class SongController {
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
+
+
+
+
     @ApiOperation(value = "show all songs created by user")
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id){
         Iterable<Song> songs = songService.listSongsByUser(id);
         if (songs == null){
@@ -70,8 +90,9 @@ public class SongController {
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
     @ApiOperation(value = "delete song created by user", response = Song.class)
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id){
         Song song = songService.findById(id);
         if (song == null){
@@ -80,7 +101,7 @@ public class SongController {
         songService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/top10views")
+    @GetMapping("top10views")
     public ResponseEntity<Iterable<Song>>getList10SongInTopView(){
         Iterable<Song> songs=songService.getList10SongInTopView();
         if(songs==null){
