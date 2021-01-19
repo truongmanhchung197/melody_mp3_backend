@@ -1,5 +1,6 @@
 package com.c0720i2.melody.controller;
 
+import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.song.SongService;
@@ -37,7 +38,7 @@ public class SongController {
     }
 
     @ApiOperation(value = "show list latest songs", response = Song.class)
-    @RequestMapping(value = "latestSongs", method = RequestMethod.GET)
+    @RequestMapping(value = "/latestSongs", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Song>> listLatestSong() {
         Iterable<Song> songs = songService.listLatest();
         if (songs == null) {
@@ -52,7 +53,6 @@ public class SongController {
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
-
     @PutMapping("/editsong/{username}/{id}")
     public ResponseEntity<Song> editSong(@RequestBody Song song, @PathVariable Long id, @PathVariable String username) {
         if (songService.findById(id) != null) {
@@ -60,7 +60,6 @@ public class SongController {
         }
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
-
     @GetMapping("/listsong/{username}")
     public ResponseEntity<Iterable<Song>> getSongByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
@@ -71,51 +70,51 @@ public class SongController {
 
     @ApiOperation(value = "find by name", response = Song.class)
     @RequestMapping(value = "search/{keyword}", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Song>> searchByName(@PathVariable String keyword) {
+    public ResponseEntity<Iterable<Song>> searchByName(@PathVariable String keyword){
         Iterable<Song> songs = songService.findByName(keyword);
-        if (songs == null) {
+        if (songs == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
 
+
+
+
     @ApiOperation(value = "show all songs created by user")
     @RequestMapping(value = "user/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id) {
+    public ResponseEntity<Iterable<Song>> listSongsByUser(@PathVariable Long id){
         Iterable<Song> songs = songService.listSongsByUser(id);
-        if (songs == null) {
+        if (songs == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
     @ApiOperation(value = "delete song created by user", response = Song.class)
-    @RequestMapping(value = "delete/{username}/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id) {
+    @RequestMapping(value = "listsong/{username}/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id){
         Song song = songService.findById(id);
-        if (song == null) {
+        if (song == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         songService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
     @GetMapping("top10views")
-    public ResponseEntity<Iterable<Song>> getList10SongInTopView() {
-        Iterable<Song> songs = songService.getList10SongInTopView();
-        if (songs == null) {
+    public ResponseEntity<Iterable<Song>>getList10SongInTopView(){
+        Iterable<Song> songs=songService.getList10SongInTopView();
+        if(songs==null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(songs, HttpStatus.OK);
+        return new ResponseEntity<>(songs,HttpStatus.OK);
     }
-
     @GetMapping("/songs/{id}")
-    public ResponseEntity<Song> getSongByIdSong(@PathVariable Long id) {
+    public ResponseEntity<Song> getSongByIdSong(@PathVariable Long id){
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
-
     @PutMapping("/songs/addView/{idSong}")
     public ResponseEntity<Song> addViewSong(@PathVariable Long idSong) {
         Song song = songService.findById(idSong);
