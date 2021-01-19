@@ -80,4 +80,13 @@ public class PlayListController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
+    @GetMapping("/topView")
+    public ResponseEntity<Iterable<Playlist>> topViewPlaylists(){
+        Iterable<Playlist> playlists = playListService.topView();
+        if (playlists == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
 }

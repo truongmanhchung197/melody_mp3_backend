@@ -15,4 +15,5 @@ public interface IPlayListService {
     Iterable<Playlist> findAllByUserUsername(String username);
     Playlist addSongToPlaylist(Long idSong, Long idPlaylist);
     Iterable<Playlist> listLatest();
+    Iterable<Playlist> topView();
 }

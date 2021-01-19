@@ -61,4 +61,9 @@ public class PlayListService implements IPlayListService {
         return playListRepository.findAllByCreationTimeOrderByCreationTime();
     }
 
+    @Override
+    public Iterable<Playlist> topView() {
+        return playListRepository.findAllByViewOrderByView();
+    }
+
 }
