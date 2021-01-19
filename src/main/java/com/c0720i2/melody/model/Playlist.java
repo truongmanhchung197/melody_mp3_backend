@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,7 +22,6 @@ public class Playlist {
     private String avatar;
     @ManyToOne
     private User user;
-    @ManyToMany
-    @JoinTable
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Song> songs;
 }

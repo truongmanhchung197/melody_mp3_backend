@@ -1,6 +1,7 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
+import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +20,12 @@ public class PlayListController {
     IPlayListService playListService;
 
     @GetMapping("")
-    public ResponseEntity<Iterable<Playlist>> getAll(){
+    public ResponseEntity<Iterable<Playlist>> getAll() {
         return new ResponseEntity<>(playListService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Playlist> getPlayListById(@PathVariable Long id){
+    public ResponseEntity<Playlist> getPlayListById(@PathVariable Long id) {
         Optional<Playlist> playlistOptional = playListService.findById(id);
         return playlistOptional.map(playlist -> new ResponseEntity<>(playlist, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -32,18 +33,18 @@ public class PlayListController {
 
 
     @PostMapping("")
-    public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist){
+    public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist) {
         Date currentTime = Calendar.getInstance().getTime();
         playlist.setCreationTime(currentTime);
         return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Playlist> updatePlayList(@PathVariable Long id, @RequestBody Playlist playlist){
+    public ResponseEntity<Playlist> updatePlayList(@PathVariable Long id, @RequestBody Playlist playlist) {
         Optional<Playlist> playlistOptional = playListService.findById(id);
         return playlistOptional.map(playlist1 -> {
             playlist.setId(playlist1.getId());
-            if (playlist.getName().equalsIgnoreCase("")){
+            if (playlist.getName().equalsIgnoreCase("")) {
                 playlist.setName(playlist1.getName());
             }
             return new ResponseEntity<>(playListService.save(playlist), HttpStatus.OK);
@@ -51,11 +52,22 @@ public class PlayListController {
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<Playlist> deletePlayList(@PathVariable Long id){
+    public ResponseEntity<Playlist> deletePlayList(@PathVariable Long id) {
         Optional<Playlist> playlistOptional = playListService.findById(id);
         return playlistOptional.map(playlist -> {
             playListService.remove(id);
             return new ResponseEntity<Playlist>(HttpStatus.NO_CONTENT);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        }
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<Iterable<Playlist>> findAllByUserUsername(@PathVariable String username) {
+        Iterable<Playlist> playlists = playListService.findAllByUserUsername(username);
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @PostMapping("/{idPlaylist}/songs/{idSong}")
+    public ResponseEntity<Playlist> addSongToPlaylist(@PathVariable("idPlaylist") Long idPlaylist, @PathVariable("idSong") Long idSong) {
+        return new ResponseEntity<>(playListService.addSongToPlaylist(idSong, idPlaylist), HttpStatus.OK);
+    }
 }
