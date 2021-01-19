@@ -18,6 +18,7 @@ public class Playlist {
     private String name;
     @Column(nullable = false)
     private Date creationTime;
+    private String avatar;
     @ManyToOne
     private User user;
     @ManyToMany
