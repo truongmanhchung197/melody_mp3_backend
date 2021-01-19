@@ -71,4 +71,13 @@ public class PlayListController {
         return new ResponseEntity<>(playListService.addSongToPlaylist(idSong, idPlaylist), HttpStatus.OK);
     }
 
+    @GetMapping("/latestPlaylists")
+    public ResponseEntity<Iterable<Playlist>> latestPlaylist(){
+        Iterable<Playlist> playlists = playListService.listLatest();
+        if (playlists == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
 }
