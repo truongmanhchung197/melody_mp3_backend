@@ -11,3 +11,4 @@ public interface PlayListRepository extends JpaRepository<Playlist, Long> {
     @Query(value = "select * from playlist order by creation_time desc limit 10", nativeQuery = true)
     Iterable<Playlist> findAllByCreationTimeOrderByCreationTime();
 }
+

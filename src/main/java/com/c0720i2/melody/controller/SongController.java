@@ -1,5 +1,6 @@
 package com.c0720i2.melody.controller;
 
+import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.song.SongService;
@@ -37,7 +38,7 @@ public class SongController {
     }
 
     @ApiOperation(value = "show list latest songs", response = Song.class)
-    @RequestMapping(value = "latestSongs", method = RequestMethod.GET)
+    @RequestMapping(value = "/latestSongs", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Song>> listLatestSong() {
         Iterable<Song> songs = songService.listLatest();
         if (songs == null) {
@@ -92,7 +93,7 @@ public class SongController {
     }
 
     @ApiOperation(value = "delete song created by user", response = Song.class)
-    @RequestMapping(value = "delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "listsong/{username}/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteSong(@PathVariable("id") Long id){
         Song song = songService.findById(id);
         if (song == null){
