@@ -2,16 +2,13 @@ package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
-import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.repository.PlayListRepository;
 import com.c0720i2.melody.repository.SongRepository;
-import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class PlayListService implements IPlayListService {
@@ -59,5 +56,10 @@ public class PlayListService implements IPlayListService {
         return playlist;
     }
 
+    @Override
+    public Iterable<Playlist> listLatest() {
+        return playListRepository.findAllByCreationTimeOrderByCreationTime();
+    }
 
 }
+
