@@ -88,4 +88,13 @@ public class PlayListController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
+    @GetMapping("/topLike")
+    public ResponseEntity<Iterable<Playlist>> topLikePlaylists(){
+        Iterable<Playlist> playlists = playListService.topLike();
+        if (playlists == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
 }
