@@ -90,10 +90,4 @@ public class PlayListController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
-    @GetMapping("/topLike")
-    public ResponseEntity<List<Playlist>> topLikePlaylists(){
-        List<Playlist> playlists = playListService.topLike();
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
 }

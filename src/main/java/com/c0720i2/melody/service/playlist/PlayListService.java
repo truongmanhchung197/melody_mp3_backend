@@ -71,20 +71,4 @@ public class PlayListService implements IPlayListService {
         return playListRepository.findAllByViewOrderByView();
     }
 
-    @Override
-    public List<Playlist> topLike() {
-        Iterable<BigInteger> likePlaylists = likePlaylistRepository.findAllByPlaylistIsLike();
-        List<Long> array = new ArrayList<>();
-        List<Playlist> playlists = new ArrayList<>();
-
-        for (BigInteger like : likePlaylists){
-            Long longNumber= like.longValue();
-            array.add(longNumber);
-        }
-        for (Long e: array){
-            playlists.add(playListRepository.findById(e).get());
-        }
-        return playlists;
-    }
-
 }

@@ -17,5 +17,4 @@ public interface IPlayListService {
     Playlist addSongToPlaylist(Long idSong, Long idPlaylist);
     Iterable<Playlist> listLatest();
     Iterable<Playlist> topView();
-    List<Playlist> topLike();
 }
