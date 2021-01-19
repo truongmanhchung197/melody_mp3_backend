@@ -2,11 +2,14 @@ package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.repository.LikePlaylistRepository;
 import com.c0720i2.melody.repository.PlayListRepository;
 import com.c0720i2.melody.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,8 +17,11 @@ import java.util.Optional;
 public class PlayListService implements IPlayListService {
     @Autowired
     private PlayListRepository playListRepository;
+
     @Autowired
     private SongRepository songRepository;
+    @Autowired
+    LikePlaylistRepository likePlaylistRepository;
 
     @Override
     public Iterable<Playlist> getAll() {
@@ -59,6 +65,27 @@ public class PlayListService implements IPlayListService {
     @Override
     public Iterable<Playlist> listLatest() {
         return playListRepository.findAllByCreationTimeOrderByCreationTime();
+    }
+
+    @Override
+    public Iterable<Playlist> topView() {
+        return playListRepository.findAllByViewOrderByView();
+    }
+
+    @Override
+    public List<Playlist> topLike() {
+        Iterable<BigInteger> likePlaylists = likePlaylistRepository.findAllByPlaylistIsLike();
+        List<Long> array = new ArrayList<>();
+        List<Playlist> playlists = new ArrayList<>();
+
+        for (BigInteger like : likePlaylists){
+            Long longNumber= like.longValue();
+            array.add(longNumber);
+        }
+        for (Long e: array){
+            playlists.add(playListRepository.findById(e).get());
+        }
+        return playlists;
     }
 
 }
