@@ -4,6 +4,7 @@ import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.User;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,4 +17,5 @@ public interface IPlayListService {
     Playlist addSongToPlaylist(Long idSong, Long idPlaylist);
     Iterable<Playlist> listLatest();
     Iterable<Playlist> topView();
+    List<Playlist> topLike();
 }
