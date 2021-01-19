@@ -2,6 +2,7 @@ package com.c0720i2.melody.model;
 
 import jdk.nashorn.internal.ir.annotations.Ignore;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Playlist {
     @Column(nullable = false)
     private Date creationTime;
     private String avatar;
+    private Long view;
     @ManyToOne
     private User user;
     @ManyToMany(fetch = FetchType.LAZY)
