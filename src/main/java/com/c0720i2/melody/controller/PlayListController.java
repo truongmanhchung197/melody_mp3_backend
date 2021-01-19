@@ -1,7 +1,6 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
-import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
