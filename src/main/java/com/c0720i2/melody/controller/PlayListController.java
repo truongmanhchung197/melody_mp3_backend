@@ -2,7 +2,9 @@ package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.playlist.IPlayListService;
+import com.c0720i2.melody.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import java.util.Optional;
 public class PlayListController {
     @Autowired
     IPlayListService playListService;
+
+    @Autowired
+    IUserService userService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<Playlist>> getAll() {
@@ -64,6 +69,35 @@ public class PlayListController {
     public ResponseEntity<Iterable<Playlist>> findAllByUserUsername(@PathVariable String username) {
         Iterable<Playlist> playlists = playListService.findAllByUserUsername(username);
         return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @PostMapping("/user/{username}")
+    public ResponseEntity<Playlist> createNewPlayListByUser(@RequestBody Playlist playlist, @PathVariable String username){
+        User user = userService.findByUsername(username);
+        Date currentTime = Calendar.getInstance().getTime();
+        playlist.setCreationTime(currentTime);
+        return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/user/{username}/playlist/{idPlaylist}")
+    public ResponseEntity<Playlist> updatePlayListByUser(@PathVariable String username, @RequestBody Playlist playlist, @PathVariable Long idPlaylist){
+        Optional<Playlist> playlistOptional = playListService.findById(idPlaylist);
+        return playlistOptional.map(playlist1 -> {
+            playlist.setId(playlist1.getId());
+            if (playlist.getName().equalsIgnoreCase("")){
+                playlist.setName(playlist1.getName());
+            }
+            return new ResponseEntity<>(playListService.save(playlist), HttpStatus.OK);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/user/{username}/playlist/{idPlaylist}")
+    public ResponseEntity<Playlist> deletePlayListByUser(@PathVariable Long idPlaylist, @PathVariable String username){
+        Optional<Playlist> playlistOptional = playListService.findById(idPlaylist);
+        return playlistOptional.map(playlist -> {
+            playListService.remove(idPlaylist);
+            return new ResponseEntity<Playlist>(HttpStatus.NO_CONTENT);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/{idPlaylist}/songs/{idSong}")
