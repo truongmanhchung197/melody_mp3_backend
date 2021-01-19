@@ -11,5 +11,7 @@ public interface IPlayListService {
     Playlist save (Playlist playlist);
     Optional<Playlist> findById(Long id);
     void remove(Long id);
+    Iterable<Playlist> findAllByUserUsername(String username);
+    Playlist addSongToPlaylist(Long idSong, Long idPlaylist);
     Iterable<Playlist> listLatest();
 }

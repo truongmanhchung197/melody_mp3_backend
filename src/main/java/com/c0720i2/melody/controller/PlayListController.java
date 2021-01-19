@@ -1,6 +1,7 @@
 package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
+import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.service.playlist.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,17 @@ public class PlayListController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/user/{username}")
+    public ResponseEntity<Iterable<Playlist>> findAllByUserUsername(@PathVariable String username) {
+        Iterable<Playlist> playlists = playListService.findAllByUserUsername(username);
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @PostMapping("/{idPlaylist}/songs/{idSong}")
+    public ResponseEntity<Playlist> addSongToPlaylist(@PathVariable("idPlaylist") Long idPlaylist, @PathVariable("idSong") Long idSong) {
+        return new ResponseEntity<>(playListService.addSongToPlaylist(idSong, idPlaylist), HttpStatus.OK);
+    }
+
     @GetMapping("/latestPlaylists")
     public ResponseEntity<Iterable<Playlist>> latestPlaylist(){
         Iterable<Playlist> playlists = playListService.listLatest();
@@ -67,4 +79,5 @@ public class PlayListController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+
 }

@@ -1,16 +1,21 @@
 package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
+import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.repository.PlayListRepository;
-import com.c0720i2.melody.service.playlist.IPlayListService;
+import com.c0720i2.melody.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+
 @Service
 public class PlayListService implements IPlayListService {
     @Autowired
     private PlayListRepository playListRepository;
+    @Autowired
+    private SongRepository songRepository;
 
     @Override
     public Iterable<Playlist> getAll() {
@@ -33,7 +38,28 @@ public class PlayListService implements IPlayListService {
     }
 
     @Override
+    public Iterable<Playlist> findAllByUserUsername(String username) {
+        return playListRepository.findAllByUserUsername(username);
+    }
+
+    @Override
+    public Playlist addSongToPlaylist(Long idSong, Long idPlaylist) {
+        Song song = songRepository.findById(idSong).get();
+        Playlist playlist = playListRepository.findById(idPlaylist).get();
+        List<Song> songs = playlist.getSongs();
+        if (songs.contains(song)){
+            return null;
+        }
+        songs.add(song);
+        playlist.setSongs(songs);
+        playListRepository.save(playlist);
+        return playlist;
+    }
+
+    @Override
     public Iterable<Playlist> listLatest() {
         return playListRepository.findAllByCreationTimeOrderByCreationTime();
     }
+
 }
+
