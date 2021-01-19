@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -86,6 +87,12 @@ public class PlayListController {
         if (playlists == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/topLike")
+    public ResponseEntity<List<Playlist>> topLikePlaylists(){
+        List<Playlist> playlists = playListService.topLike();
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
