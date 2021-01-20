@@ -131,18 +131,18 @@ public class SongController {
         }
         return new ResponseEntity<>(songs,HttpStatus.OK);
     }
-    @PostMapping("/songs/addLike/{idSong}/user/{idUser}")
-    public ResponseEntity<LikeSong> addLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("idUser") Long idUser){
+    @PostMapping("/songs/addLike/{idSong}/user/{username}")
+    public ResponseEntity<LikeSong> addLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
         Song song = songService.findById(idSong);
-        User user = userService.findById(idUser).get();
+        User user = userService.findByUsername(username);
         LikeSongId likeSongId = new LikeSongId(song,user);
         LikeSong likeSong = new LikeSong(likeSongId);
         return new ResponseEntity<>(likeSongService.save(likeSong), HttpStatus.CREATED);
     }
-    @DeleteMapping("/songs/deleteLike/{idSong}/user/{idUser}")
-    public ResponseEntity<LikeSong> deleteLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("idUser") Long idUser){
+    @DeleteMapping("/songs/deleteLike/{idSong}/user/{username}")
+    public ResponseEntity<LikeSong> deleteLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
         Song song = songService.findById(idSong);
-        User user = userService.findById(idUser).get();
+        User user = userService.findByUsername(username);
         LikeSongId likeSongId = new LikeSongId(song, user);
         Optional<LikeSong> likeSongOptional = likeSongService.findById(likeSongId);
         return likeSongOptional.map(likeSong -> {
@@ -158,5 +158,14 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(topLikeSongs, HttpStatus.OK);
+    }
+    @GetMapping("/songs/like/{idSong}/user/{username}")
+    public ResponseEntity<LikeSong> getLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
+        Song song = songService.findById(idSong);
+        User user = userService.findByUsername(username);
+        LikeSongId likeSongId = new LikeSongId(song, user);
+        Optional<LikeSong> likeSongOptional = likeSongService.findById(likeSongId);
+        return likeSongOptional.map(likeSong -> new ResponseEntity<>(likeSong, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 }
