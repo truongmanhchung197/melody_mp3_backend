@@ -6,14 +6,12 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@IdClass(LikeSongId.class)
 public class LikeSong {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(nullable = false)
-    private Boolean status;
     @ManyToOne
     private Song song;
+    @Id
     @ManyToOne
     private User user;
 }
