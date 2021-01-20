@@ -1,14 +1,22 @@
 package com.c0720i2.melody.service.song;
 
+import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.repository.LikeSongRepository;
 import com.c0720i2.melody.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SongServiceImpl implements SongService {
     @Autowired
     private SongRepository songRepository;
+    @Autowired
+    private LikeSongRepository likeSongRepository;
     @Override
     public Iterable<Song> findAll() {
         return songRepository.findAll();
@@ -59,5 +67,23 @@ public class SongServiceImpl implements SongService {
     public Iterable<Song> findAllByUserId(Long idUser) {
         return songRepository.findAllByUserId(idUser);
     }
+
+    @Override
+    public Iterable<Song> topLikeSong() {
+        Iterable<BigInteger> likeSong = likeSongRepository.findAllByUserLike();
+        List<Long> array = new ArrayList<>();
+        List<Song> songs = new ArrayList<>();
+
+        for (BigInteger like : likeSong){
+            Long longNumber= like.longValue();
+            array.add(longNumber);
+        }
+        for (Long e: array){
+            songs.add(songRepository.findById(e).get());
+        }
+        return songs;
+    }
+
+
 }
 

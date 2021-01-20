@@ -122,4 +122,13 @@ public class SongController {
         song.setNumberOfView(views + 1);
         return new ResponseEntity<>(songService.save(song), HttpStatus.OK);
     }
+
+    @GetMapping("/topLikeSong")
+    public ResponseEntity<Iterable<Song>> topLikeSong(){
+        Iterable<Song> songs = songService.topLikeSong();
+        if (songs == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
 }

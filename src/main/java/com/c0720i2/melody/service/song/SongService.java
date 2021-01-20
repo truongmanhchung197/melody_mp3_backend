@@ -13,5 +13,6 @@ public interface SongService {
     Iterable<Song> findByName(String keyword);
     Iterable<Song> getList10SongInTopView();
     Iterable<Song> findAllByUserId(Long idUser);
+    Iterable<Song> topLikeSong();
 
 }
