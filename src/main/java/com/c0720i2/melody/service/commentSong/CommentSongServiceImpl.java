@@ -1,11 +1,14 @@
 package com.c0720i2.melody.service.commentSong;
 
 import com.c0720i2.melody.model.CommentSong;
+import com.c0720i2.melody.model.Song;
 import com.c0720i2.melody.repository.CommentSongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class CommentSongServiceImpl implements CommentSongService {
 
     @Autowired
@@ -29,5 +32,10 @@ public class CommentSongServiceImpl implements CommentSongService {
     @Override
     public CommentSong save(CommentSong commentSong) {
         return commentSongRepository.save(commentSong);
+    }
+
+    @Override
+    public Iterable<CommentSong> getCommentSongsBySong(Song song) {
+        return commentSongRepository.getCommentSongsBySong(song);
     }
 }
