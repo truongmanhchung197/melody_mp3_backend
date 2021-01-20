@@ -11,10 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Optional;
+import java.math.BigInteger;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -151,5 +149,14 @@ public class SongController {
             likeSongService.delete(likeSongId);
             return new ResponseEntity<LikeSong>(HttpStatus.NO_CONTENT);
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/likeNumberOfSong")
+    public ResponseEntity<List<BigInteger>> topLikeNumberOfSong(){
+        List<BigInteger> topLikeSongs = songService.likeNumber();
+        if (topLikeSongs == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(topLikeSongs, HttpStatus.OK);
     }
 }

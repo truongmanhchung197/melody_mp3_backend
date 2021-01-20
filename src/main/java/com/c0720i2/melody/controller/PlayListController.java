@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -132,4 +134,12 @@ public class PlayListController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
+    @GetMapping("/likeNumber")
+    public ResponseEntity<List<BigInteger>> topLikeNumber(){
+        List<BigInteger> topLikeNumber = playListService.likeNumber();
+        if (topLikeNumber == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(topLikeNumber, HttpStatus.OK);
+    }
 }

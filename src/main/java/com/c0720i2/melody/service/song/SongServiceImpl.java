@@ -84,6 +84,12 @@ public class SongServiceImpl implements SongService {
         return songs;
     }
 
+    @Override
+    public List<BigInteger> likeNumber() {
+        List<BigInteger> likeNumberOfSong = likeSongRepository.findAllByLikeNumberOfSong();
+        return likeNumberOfSong;
+    }
+
 
 }
 

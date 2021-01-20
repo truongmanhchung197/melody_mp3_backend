@@ -3,6 +3,7 @@ package com.c0720i2.melody.service.playlist;
 import com.c0720i2.melody.model.Playlist;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,5 @@ public interface IPlayListService {
     Iterable<Playlist> listLatest();
     Iterable<Playlist> topView();
     List<Playlist> topLike();
+    List<BigInteger> likeNumber();
 }
