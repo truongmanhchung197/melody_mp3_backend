@@ -88,4 +88,10 @@ public class PlayListService implements IPlayListService {
         return playlists;
     }
 
+    @Override
+    public List<BigInteger> likeNumber() {
+        List<BigInteger> listLikeNumbers = likePlaylistRepository.findAllByLikeNumberOfPlayList();
+        return listLikeNumbers;
+    }
+
 }

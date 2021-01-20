@@ -6,12 +6,14 @@ import javax.persistence.*;
 
 @Entity
 @Data
-@IdClass(LikeSongId.class)
 public class LikeSong {
-    @Id
-    @ManyToOne
-    private Song song;
-    @Id
-    @ManyToOne
-    private User user;
+    @EmbeddedId
+    private LikeSongId likeSongId;
+
+    public LikeSong(LikeSongId likeSongId) {
+        this.likeSongId = likeSongId;
+    }
+
+    public LikeSong() {
+    }
 }
