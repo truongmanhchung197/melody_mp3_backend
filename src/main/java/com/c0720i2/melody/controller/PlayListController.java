@@ -79,6 +79,7 @@ public class PlayListController {
         User user = userService.findByUsername(username);
         Date currentTime = Calendar.getInstance().getTime();
         playlist.setCreationTime(currentTime);
+        playlist.setUser(user);
         return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
     }
 
