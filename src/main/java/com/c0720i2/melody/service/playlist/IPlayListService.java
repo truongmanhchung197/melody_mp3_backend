@@ -21,4 +21,5 @@ public interface IPlayListService {
     List<Playlist> topLike();
     List<BigInteger> likeNumber();
     List<Track> getTrackPlaylistById(Long idPlaylist);
+    Iterable<Playlist> findByName(String keyword);
 }

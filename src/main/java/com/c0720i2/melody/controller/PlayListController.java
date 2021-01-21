@@ -151,4 +151,13 @@ public class PlayListController {
         }
         return new ResponseEntity<>(tracks,HttpStatus.OK);
     }
+
+    @GetMapping("/searchPlaylist/{keyword}")
+    public ResponseEntity<Iterable<Playlist>> searchByName(@PathVariable String keyword){
+        Iterable<Playlist> playlists = playListService.findByName(keyword);
+        if (playlists == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
 }

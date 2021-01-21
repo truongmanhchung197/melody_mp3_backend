@@ -109,4 +109,9 @@ public class PlayListService implements IPlayListService {
         return tracks;
     }
 
+    @Override
+    public Iterable<Playlist> findByName(String keyword) {
+        return playListRepository.findAllByNameContains(keyword);
+    }
+
 }
