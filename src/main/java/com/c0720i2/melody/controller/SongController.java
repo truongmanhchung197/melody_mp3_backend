@@ -123,7 +123,7 @@ public class SongController {
         return new ResponseEntity<>(songService.save(song), HttpStatus.OK);
     }
 
-    @GetMapping("/topLikeSong")
+    @GetMapping("/songs/topLikeSong")
     public ResponseEntity<Iterable<Song>> topLikeSong(){
         Iterable<Song> songs = songService.topLikeSong();
         if (songs == null) {
@@ -151,7 +151,7 @@ public class SongController {
         }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/likeNumberOfSong")
+    @GetMapping("/songs/likeNumberOfSong")
     public ResponseEntity<List<BigInteger>> topLikeNumberOfSong(){
         List<BigInteger> topLikeSongs = songService.likeNumber();
         if (topLikeSongs == null){

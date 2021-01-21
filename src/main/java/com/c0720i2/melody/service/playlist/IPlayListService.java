@@ -1,6 +1,7 @@
 package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
+import com.c0720i2.melody.model.Track;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -19,4 +20,6 @@ public interface IPlayListService {
     Iterable<Playlist> topView();
     List<Playlist> topLike();
     List<BigInteger> likeNumber();
+    List<Track> getTrackPlaylistById(Long idPlaylist);
+    Iterable<Playlist> findByName(String keyword);
 }

@@ -2,6 +2,7 @@ package com.c0720i2.melody.service.playlist;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.model.Track;
 import com.c0720i2.melody.repository.LikePlaylistRepository;
 import com.c0720i2.melody.repository.PlayListRepository;
 import com.c0720i2.melody.repository.SongRepository;
@@ -92,6 +93,25 @@ public class PlayListService implements IPlayListService {
     public List<BigInteger> likeNumber() {
         List<BigInteger> listLikeNumbers = likePlaylistRepository.findAllByLikeNumberOfPlayList();
         return listLikeNumbers;
+    }
+
+    @Override
+    public List<Track> getTrackPlaylistById(Long idPlaylist) {
+        List<Track> tracks = new ArrayList<>();
+        List<Song> songs = playListRepository.findById(idPlaylist).get().getSongs();
+        for (Song song: songs){
+            Track track = new Track();
+            track.setLink(song.getFile());
+            track.setArtist(song.getAuthor());
+            track.setTitle(song.getName());
+            tracks.add(track);
+        }
+        return tracks;
+    }
+
+    @Override
+    public Iterable<Playlist> findByName(String keyword) {
+        return playListRepository.findAllByNameContains(keyword);
     }
 
 }
