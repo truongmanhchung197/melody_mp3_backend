@@ -15,12 +15,12 @@ public interface LikeSongRepository extends CrudRepository<LikeSong, LikeSongId>
             "    join (select count(user_id) as like_number, song_id\n" +
             "    from like_song group by song_id order by like_number desc)\n" +
             "        likesong where id = likesong.song_id\n" +
-            "order by likesong.like_number desc limit 5", nativeQuery = true)
+            "order by likesong.like_number desc limit 10", nativeQuery = true)
     Iterable<BigInteger> findAllByUserLike();
 
     @Query(value = "select count(user_id) as like_number, song_id\n" +
             "from like_song group by song_id\n" +
-            "order by like_number desc limit 5;", nativeQuery = true)
+            "order by like_number desc limit 10;", nativeQuery = true)
     List<BigInteger> findAllByLikeNumberOfSong();
 
 }
