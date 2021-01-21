@@ -4,9 +4,10 @@ import com.c0720i2.melody.model.CommentPlaylist;
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.repository.CommentPlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class CommentPlaylistService implements ICommentPlaylistService {
 
     @Autowired
