@@ -2,6 +2,7 @@ package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.model.Track;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.playlist.IPlayListService;
 import com.c0720i2.melody.service.user.IUserService;
@@ -10,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -132,4 +135,20 @@ public class PlayListController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
+    @GetMapping("/likeNumber")
+    public ResponseEntity<List<BigInteger>> topLikeNumber(){
+        List<BigInteger> topLikeNumber = playListService.likeNumber();
+        if (topLikeNumber == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(topLikeNumber, HttpStatus.OK);
+    }
+    @GetMapping("/tracks/{id}")
+    public ResponseEntity<List<Track>> getTrackPlaylist(@PathVariable Long id){
+        List<Track> tracks = playListService.getTrackPlaylistById(id);
+        if (tracks.size() == 0){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tracks,HttpStatus.OK);
+    }
 }
