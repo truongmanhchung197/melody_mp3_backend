@@ -1,8 +1,7 @@
 package com.c0720i2.melody.controller;
 
-import com.c0720i2.melody.model.Playlist;
-import com.c0720i2.melody.model.Song;
-import com.c0720i2.melody.model.User;
+import com.c0720i2.melody.model.*;
+import com.c0720i2.melody.service.likesong.LikeSongService;
 import com.c0720i2.melody.service.song.SongService;
 import com.c0720i2.melody.service.user.IUserService;
 import com.c0720i2.melody.service.user.UserService;
@@ -12,9 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
+import java.math.BigInteger;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -24,6 +22,8 @@ public class SongController {
 
     @Autowired
     IUserService userService;
+    @Autowired
+    LikeSongService likeSongService;
     Date currentTime = Calendar.getInstance().getTime();
 
     @ApiOperation(value = "Create Song", response = Song.class)
@@ -114,5 +114,58 @@ public class SongController {
     public ResponseEntity<Song> getSongByIdSong(@PathVariable Long id){
         Song song = songService.findById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+    @PutMapping("/songs/addView/{idSong}")
+    public ResponseEntity<Song> addViewSong(@PathVariable Long idSong) {
+        Song song = songService.findById(idSong);
+        Long views = song.getNumberOfView();
+        song.setNumberOfView(views + 1);
+        return new ResponseEntity<>(songService.save(song), HttpStatus.OK);
+    }
+
+    @GetMapping("/songs/topLikeSong")
+    public ResponseEntity<Iterable<Song>> topLikeSong(){
+        Iterable<Song> songs = songService.topLikeSong();
+        if (songs == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(songs,HttpStatus.OK);
+    }
+    @PostMapping("/songs/addLike/{idSong}/user/{username}")
+    public ResponseEntity<LikeSong> addLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
+        Song song = songService.findById(idSong);
+        User user = userService.findByUsername(username);
+        LikeSongId likeSongId = new LikeSongId(song,user);
+        LikeSong likeSong = new LikeSong(likeSongId);
+        return new ResponseEntity<>(likeSongService.save(likeSong), HttpStatus.CREATED);
+    }
+    @DeleteMapping("/songs/deleteLike/{idSong}/user/{username}")
+    public ResponseEntity<LikeSong> deleteLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
+        Song song = songService.findById(idSong);
+        User user = userService.findByUsername(username);
+        LikeSongId likeSongId = new LikeSongId(song, user);
+        Optional<LikeSong> likeSongOptional = likeSongService.findById(likeSongId);
+        return likeSongOptional.map(likeSong -> {
+            likeSongService.delete(likeSongId);
+            return new ResponseEntity<LikeSong>(HttpStatus.NO_CONTENT);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/songs/likeNumberOfSong")
+    public ResponseEntity<List<BigInteger>> topLikeNumberOfSong(){
+        List<BigInteger> topLikeSongs = songService.likeNumber();
+        if (topLikeSongs == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(topLikeSongs, HttpStatus.OK);
+    }
+    @GetMapping("/songs/like/{idSong}/user/{username}")
+    public ResponseEntity<LikeSong> getLikeSong(@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
+        Song song = songService.findById(idSong);
+        User user = userService.findByUsername(username);
+        LikeSongId likeSongId = new LikeSongId(song, user);
+        Optional<LikeSong> likeSongOptional = likeSongService.findById(likeSongId);
+        return likeSongOptional.map(likeSong -> new ResponseEntity<>(likeSong, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 }
