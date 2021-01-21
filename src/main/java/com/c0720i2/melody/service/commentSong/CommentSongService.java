@@ -7,6 +7,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface CommentSongService extends IGeneralService<CommentSong> {
-    Iterable<CommentSong> getCommentSongsBySong(Song song);
-
+    Iterable<CommentSong> getCommentSongsBySongOrderByCreationTimeDesc(Song song);
+//    Iterable<CommentSong> findAllByCreationTimeOrderByCreationTime();
 }

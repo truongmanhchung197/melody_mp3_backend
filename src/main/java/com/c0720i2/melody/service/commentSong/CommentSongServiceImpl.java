@@ -35,7 +35,7 @@ public class CommentSongServiceImpl implements CommentSongService {
     }
 
     @Override
-    public Iterable<CommentSong> getCommentSongsBySong(Song song) {
-        return commentSongRepository.getCommentSongsBySong(song);
+    public Iterable<CommentSong> getCommentSongsBySongOrderByCreationTimeDesc(Song song) {
+        return commentSongRepository.getCommentSongsBySongOrderByCreationTimeDesc(song);
     }
 }
