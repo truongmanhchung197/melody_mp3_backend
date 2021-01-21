@@ -2,6 +2,7 @@ package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.Playlist;
 import com.c0720i2.melody.model.Song;
+import com.c0720i2.melody.model.Track;
 import com.c0720i2.melody.model.User;
 import com.c0720i2.melody.service.playlist.IPlayListService;
 import com.c0720i2.melody.service.user.IUserService;
@@ -141,5 +142,13 @@ public class PlayListController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(topLikeNumber, HttpStatus.OK);
+    }
+    @GetMapping("/tracks/{id}")
+    public ResponseEntity<List<Track>> getTrackPlaylist(@PathVariable Long id){
+        List<Track> tracks = playListService.getTrackPlaylistById(id);
+        if (tracks.size() == 0){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(tracks,HttpStatus.OK);
     }
 }
