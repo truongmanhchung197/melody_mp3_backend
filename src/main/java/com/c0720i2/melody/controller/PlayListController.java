@@ -45,6 +45,7 @@ public class PlayListController {
     public ResponseEntity<Playlist> createNewPlayList(@RequestBody Playlist playlist) {
         Date currentTime = Calendar.getInstance().getTime();
         playlist.setCreationTime(currentTime);
+        playlist.setView(0L);
         return new ResponseEntity<>(playListService.save(playlist), HttpStatus.CREATED);
     }
 

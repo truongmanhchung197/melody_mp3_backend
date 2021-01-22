@@ -2,6 +2,7 @@ package com.c0720i2.melody.controller;
 
 import com.c0720i2.melody.model.*;
 import com.c0720i2.melody.service.likesong.LikeSongService;
+import com.c0720i2.melody.service.playlist.PlayListService;
 import com.c0720i2.melody.service.song.SongService;
 import com.c0720i2.melody.service.user.IUserService;
 import com.c0720i2.melody.service.user.UserService;
@@ -19,6 +20,9 @@ import java.util.*;
 public class SongController {
     @Autowired
     SongService songService;
+
+    @Autowired
+    PlayListService playListService;
 
     @Autowired
     IUserService userService;
@@ -167,5 +171,21 @@ public class SongController {
         Optional<LikeSong> likeSongOptional = likeSongService.findById(likeSongId);
         return likeSongOptional.map(likeSong -> new ResponseEntity<>(likeSong, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
+    @GetMapping("/song-playlist/{id}/user/{username}")
+    public ResponseEntity<Iterable<Song>> getListSongByIdPlayList(@PathVariable("id") Long id, @PathVariable("username") String username){
+        Optional<Playlist> playlist = playListService.findById(id);
+        List<Song> listSong = playlist.get().getSongs();
+        return new ResponseEntity<>(listSong,HttpStatus.OK);
+    }
+    @DeleteMapping("/song-playlist/{idPlaylist}/user/{username}/delete/{idSong}")
+    public ResponseEntity<Iterable<Song>> deleteSongOutPlayList(@PathVariable("idPlaylist") Long idPlaylist,@PathVariable("idSong") Long idSong, @PathVariable("username") String username){
+        Optional<Playlist> playlist = playListService.findById(idPlaylist);
+        List<Song> listSong = playlist.get().getSongs();
+        Song song = songService.findById(idSong);
+        listSong.remove(song);
+        playlist.get().setSongs(listSong);
+        playListService.save(playlist.get());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
