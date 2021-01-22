@@ -192,5 +192,12 @@ public class PlayListController {
         return likePlaylistOptional.map(likePlaylist -> new ResponseEntity<>(likePlaylist, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
+    @PutMapping("/addView/{idPLayList}")
+    public ResponseEntity<Playlist> addViewPlaylist(@PathVariable Long idPLayList) {
+        Playlist playlist = playListService.findById(idPLayList).get();
+        Long views = playlist.getView();
+        playlist.setView(views + 1);
+        return new ResponseEntity<>(playListService.save(playlist), HttpStatus.OK);
+    }
 
 }
