@@ -1,9 +1,7 @@
 package com.c0720i2.melody.controller;
 
-import com.c0720i2.melody.model.Playlist;
-import com.c0720i2.melody.model.Song;
-import com.c0720i2.melody.model.Track;
-import com.c0720i2.melody.model.User;
+import com.c0720i2.melody.model.*;
+import com.c0720i2.melody.service.likeplaylist.ILikePlaylistService;
 import com.c0720i2.melody.service.playlist.IPlayListService;
 import com.c0720i2.melody.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,9 @@ public class PlayListController {
 
     @Autowired
     IUserService userService;
+
+    @Autowired
+    ILikePlaylistService likePlaylistService;
 
     @GetMapping("")
     public ResponseEntity<Iterable<Playlist>> getAll() {
@@ -161,4 +162,34 @@ public class PlayListController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+    @PostMapping("/addLike/{idPlaylist}/user/{username}")
+    public ResponseEntity<LikePlaylist> addLikePlaylist(@PathVariable("idPlaylist") Long idPlaylist, @PathVariable("username") String username){
+        Playlist playlist = playListService.findById(idPlaylist).get();
+        User user = userService.findByUsername(username);
+        LikePlaylistId likePlaylistid = new LikePlaylistId(playlist,user);
+        LikePlaylist likePlaylist = new LikePlaylist(likePlaylistid);
+        return new ResponseEntity<>(likePlaylistService.save(likePlaylist), HttpStatus.CREATED);
+    }
+    @DeleteMapping("/deleteLike/{idPlaylist}/user/{username}")
+    public ResponseEntity<LikePlaylist> deleteLikePlaylist(@PathVariable("idPlaylist") Long idPlaylist, @PathVariable("username") String username){
+        Playlist playlist = playListService.findById(idPlaylist).get();
+        User user = userService.findByUsername(username);
+        LikePlaylistId likePlaylistId = new LikePlaylistId(playlist, user);
+        Optional<LikePlaylist> likePlaylistOptional = likePlaylistService.findById(likePlaylistId);
+        return likePlaylistOptional.map(likeSong -> {
+            likePlaylistService.delete(likePlaylistId);
+            return new ResponseEntity<LikePlaylist>(HttpStatus.NO_CONTENT);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/like/{idPlaylist}/user/{username}")
+    public ResponseEntity<LikePlaylist> getLikePlaylist(@PathVariable("idPlaylist") Long idPlaylist, @PathVariable("username") String username){
+        Playlist playlist = playListService.findById(idPlaylist).get();
+        User user = userService.findByUsername(username);
+        LikePlaylistId likePlaylistId = new LikePlaylistId(playlist, user);
+        Optional<LikePlaylist> likePlaylistOptional = likePlaylistService.findById(likePlaylistId);
+        return likePlaylistOptional.map(likePlaylist -> new ResponseEntity<>(likePlaylist, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
+    }
+
 }
