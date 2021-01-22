@@ -186,6 +186,6 @@ public class SongController {
         listSong.remove(song);
         playlist.get().setSongs(listSong);
         playListService.save(playlist.get());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(listSong, HttpStatus.OK);
     }
 }
